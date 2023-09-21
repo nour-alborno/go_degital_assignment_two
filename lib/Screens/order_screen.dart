@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_degital_assignment_two/Data/order_data.dart';
 import 'package:go_degital_assignment_two/Data/order_model.dart';
+import 'package:go_degital_assignment_two/Data/util.dart';
 import 'package:go_degital_assignment_two/Widgets/choices_lists_widgets.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -15,6 +16,13 @@ class _OrderScreenState extends State<OrderScreen> {
 
   OrderDataModel? orderDataModel = OrderDataModel(orderData);
 
+   int ordersNum = 1;
+
+   double? orderPrice ;
+
+  updateScreen(){
+    setState(() {});
+  }
 
 
   @override
@@ -22,15 +30,21 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       body: Stack(
         children: [
-         Column(
-           crossAxisAlignment: CrossAxisAlignment.end ,
+       Positioned(
+         top: 0,
+         right: 0,
+         left: 0,
+         bottom: 70.h,
+
+         child: ListView(
+
            children: [
              Container(
                height: 200.h,
                clipBehavior: Clip.antiAliasWithSaveLayer,
                decoration: BoxDecoration(
                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(30.r)),
-                   boxShadow: [
+                   boxShadow: const [
                      BoxShadow(color: Colors.grey,blurRadius: 6,offset: Offset(0,0))
                    ]
                ),
@@ -64,20 +78,24 @@ class _OrderScreenState extends State<OrderScreen> {
                              children: [
 
                                IconButton(onPressed: () {
+                                 ordersNum == 10 ? ordersNum : ordersNum++;
+                                 orderPrice = orderDataModel?.price ?? 0 * ordersNum.toDouble();
+                                 print(orderPrice);
+                                 setState(() {});
+                               }, icon:const Icon( Icons.add,size: 15,color: Colors.blue,)),
 
-                               }, icon:Icon( Icons.add,size: 15,color: Colors.blue,)),
-
-                               Text("1"),
+                               Text(ordersNum.toString()),
 
 
                                IconButton(onPressed: () {
-
-                               }, icon:Text("-",style: TextStyle(fontSize: 20.sp,color: Colors.blue,fontWeight: FontWeight.bold),))
+                                     ordersNum == 0 ? ordersNum : ordersNum --;
+                                     setState(() {});
+                               }, icon:Icon(Icons.remove,size: 20.h,color: Colors.blue,))
                              ],
                            ),
                          ),
                        ),
-                       Text(" ${orderDataModel?.price ?? ""} د.أ",style: TextStyle(fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),
+                       Text(" ${orderDataModel?.price ?? ""} د.أ",style: const TextStyle(fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),
 
                      ],
                    ),
@@ -99,35 +117,19 @@ class _OrderScreenState extends State<OrderScreen> {
                height: 10.h,
              ),
              RichText(
+             textDirection: TextDirection.rtl,
                text: TextSpan(
                  text: 'إختيارك من الحجم ',
-                 style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                 style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
                  children: <TextSpan>[
                    TextSpan(text: '(إختياري)', style: TextStyle(color: Colors.grey,fontSize: 10.sp)),
 
                  ],
                ),
              ),
-             Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),),
+             Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),textDirection: TextDirection.rtl),
 
-             Expanded(
-               child: ListView.builder(
-                 itemCount: 3,
-                 itemBuilder: (context, index) {
-                 return Column(
-                   children: [
-                     ListChoicesWidget(where: "size",sizes: orderDataModel?.sizes?[index],),
-                     Divider(
-                       height: 20,
-                       thickness: 3,
-                       indent: 20,
-                       endIndent: 0,
-                       color: Colors.grey.shade200,
-                     ),
-                   ],
-                 );
-               },),
-             ),
+             ListChoicesWidget(isSize: true,orderData: orderDataModel, functionUpdate: updateScreen),
 
              SizedBox(height: 5.h,),
              Divider(
@@ -140,53 +142,34 @@ class _OrderScreenState extends State<OrderScreen> {
                height: 10.h,
              ),
              RichText(
+               textDirection: TextDirection.rtl,
                text: TextSpan(
                  text: 'إختيارك من الإضافات ',
-                 style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
+                 style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
                  children:  <TextSpan>[
                    TextSpan(text: '(إختياري)', style: TextStyle(color: Colors.grey,fontSize: 10.sp)),
 
                  ],
                ),
              ),
-             Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),),
+             Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),textDirection: TextDirection.rtl,),
 
-             Expanded(
-               child: ListView.builder(
-                 itemCount: 3,
-                 itemBuilder: (context, index) {
-                   return Column(
-                     children: [
-                       ListChoicesWidget(where: "options", additions: orderDataModel?.additions?[index],),
-                       Divider(
-                         height: 20,
-                         thickness: 3,
-                         indent: 20,
-                         endIndent: 0,
-                         color: Colors.grey.shade200,
-                       ),
-                     ],
-                   );
-                 },),
-             ),
-
-
-
-
+             ListChoicesWidget(isSize: false, orderData: orderDataModel, functionUpdate: updateScreen),
            ],
          ),
+       ),
 
           Positioned(
             bottom: 0,
             right: 0,
             left: 0,
             child: Container(
-
+              height: 80.h,
               padding: EdgeInsets.all(20.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.horizontal(left: Radius.circular(15.r), right: Radius.circular(15.r) ),
                 boxShadow: [
-                  BoxShadow(color: Colors.grey.shade300,blurRadius: 5,offset: Offset(0, -2))
+                  BoxShadow(color: Colors.grey.shade300,blurRadius: 5,offset: const Offset(0, -2))
                 ],
                 color: Colors.white
               ),
@@ -196,18 +179,17 @@ class _OrderScreenState extends State<OrderScreen> {
                     backgroundColor: Colors.cyanAccent,
                     foregroundColor: Colors.white,
                     elevation: 0,
-                    textStyle: TextStyle(fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.r), // Border radius
                     ),
 
                   ),
-
-                  child: Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                    Text("Final Price",),
-                    Text("إضافة إلى السلة",)
+                    Text("د.أ ${orderPrice}",),
+                    const Text("إضافة إلى السلة",)
                   ],))
             ),
           )
@@ -215,4 +197,6 @@ class _OrderScreenState extends State<OrderScreen> {
       )
     );
   }
+
+
 }

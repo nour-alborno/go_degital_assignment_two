@@ -5,14 +5,17 @@ Map<String, dynamic> orderData = {
 "price": 21.00,
 "sizes" : [
 {
+  "id" : 1,
 "size" : "صنف 1",
 "price" : 21.00
 },
 {
+  "id" : 2,
 "size" : "صنف 2",
 "price" : 900.0
 },
 {
+  "id" : 3,
 "size" : "صنف 3",
 "price" : 800.0
 }
