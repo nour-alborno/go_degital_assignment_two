@@ -15,6 +15,7 @@ class OrderDataModel {
     title_one = map["title_one"];
     title_two = map["title_two"];
     price=map["price"];
+    sizePrice = map["price"];
 
 
   List <Map> sizeMapList = map["sizes"];

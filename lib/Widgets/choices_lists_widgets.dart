@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:go_degital_assignment_two/Data/order_model.dart';
-import 'package:go_degital_assignment_two/Data/util.dart';
+
 
 class ListChoicesWidget extends StatefulWidget {
   const ListChoicesWidget({super.key, required this.isSize, required this.orderData,this.functionUpdate });
@@ -18,11 +18,7 @@ class ListChoicesWidget extends StatefulWidget {
 }
 
 class _ListChoicesWidgetState extends State<ListChoicesWidget> {
-   int selectedSize =1 ;
    double? chooseSize ;
-
-
-   double? sizePrice =0;
    double? additionsPrice=0;
 
 
@@ -52,17 +48,12 @@ class _ListChoicesWidgetState extends State<ListChoicesWidget> {
                   ),
                  widget.isSize?
                      Radio(value:widget.orderData?.sizes?[index].sizePrice ?? 0 , groupValue:chooseSize ?? widget.orderData?.price, onChanged: (value) {
-
-
                        chooseSize = value!;
 
-                       sizePrice = value;
-
                        widget.orderData?.sizePrice = value;
-                       Utl.sizePrice = value;
-                       print(widget.orderData?.sizePrice);
-                       setState(() {
-                       });
+                       widget.functionUpdate!();
+                     //  print(widget.orderData?.sizePrice);
+
                      },)
                      : Checkbox(value:widget.orderData?.additions?[index].chosen ?? false , onChanged: (value) {
 
@@ -70,21 +61,18 @@ class _ListChoicesWidgetState extends State<ListChoicesWidget> {
                            widget.orderData?.additions?[index].chosen = value!;
 
                            double x = widget.orderData?.additions?[index].sizePrice ?? 0;
-                           print("x is : ${x}");
+                           //print("x is : ${x}");
                            if(value!){
                              additionsPrice = additionsPrice! + x;
-                             widget.orderData?.finalPriceAdditions = additionsPrice;
-
-                             print("true:${additionsPrice},,,, ${widget.orderData?.finalPriceAdditions}");
+                         //    print("true:${additionsPrice},,,, ${widget.orderData?.finalPriceAdditions}");
                            } else{
                              additionsPrice = additionsPrice! - x;
-                             widget.orderData?.finalPriceAdditions = additionsPrice;
 
-                             print("false:${additionsPrice},,,, ${widget.orderData?.finalPriceAdditions}");
+                           //  print("false:${additionsPrice},,,, ${widget.orderData?.finalPriceAdditions}");
                            }
+                           widget.orderData?.finalPriceAdditions = additionsPrice;
+                           widget.functionUpdate!();
 
-                           setState(() {
-                           });
                  },)
                 ],
               )

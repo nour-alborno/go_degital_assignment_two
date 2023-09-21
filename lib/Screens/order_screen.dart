@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_degital_assignment_two/Data/order_data.dart';
 import 'package:go_degital_assignment_two/Data/order_model.dart';
-import 'package:go_degital_assignment_two/Data/util.dart';
+
 import 'package:go_degital_assignment_two/Widgets/choices_lists_widgets.dart';
+import 'package:go_degital_assignment_two/Widgets/title_widget.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -20,13 +21,14 @@ class _OrderScreenState extends State<OrderScreen> {
 
    double? orderPrice ;
 
-  updateScreen(){
-    setState(() {});
-  }
-
 
   @override
   Widget build(BuildContext context) {
+
+    updateScreen(){
+      setState(() {});
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -79,8 +81,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
                                IconButton(onPressed: () {
                                  ordersNum == 10 ? ordersNum : ordersNum++;
-                                 orderPrice = orderDataModel?.price ?? 0 * ordersNum.toDouble();
-                                 print(orderPrice);
+
                                  setState(() {});
                                }, icon:const Icon( Icons.add,size: 15,color: Colors.blue,)),
 
@@ -88,7 +89,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
 
                                IconButton(onPressed: () {
-                                     ordersNum == 0 ? ordersNum : ordersNum --;
+                                     ordersNum == 1 ? ordersNum : ordersNum --;
                                      setState(() {});
                                }, icon:Icon(Icons.remove,size: 20.h,color: Colors.blue,))
                              ],
@@ -116,17 +117,9 @@ class _OrderScreenState extends State<OrderScreen> {
              SizedBox(
                height: 10.h,
              ),
-             RichText(
-             textDirection: TextDirection.rtl,
-               text: TextSpan(
-                 text: 'إختيارك من الحجم ',
-                 style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
-                 children: <TextSpan>[
-                   TextSpan(text: '(إختياري)', style: TextStyle(color: Colors.grey,fontSize: 10.sp)),
 
-                 ],
-               ),
-             ),
+             const TitleWidget('إختيارك من الحجم ', '(إختياري)'),
+
              Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),textDirection: TextDirection.rtl),
 
              ListChoicesWidget(isSize: true,orderData: orderDataModel, functionUpdate: updateScreen),
@@ -141,17 +134,9 @@ class _OrderScreenState extends State<OrderScreen> {
              SizedBox(
                height: 10.h,
              ),
-             RichText(
-               textDirection: TextDirection.rtl,
-               text: TextSpan(
-                 text: 'إختيارك من الإضافات ',
-                 style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
-                 children:  <TextSpan>[
-                   TextSpan(text: '(إختياري)', style: TextStyle(color: Colors.grey,fontSize: 10.sp)),
 
-                 ],
-               ),
-             ),
+             const TitleWidget('إختيارك من الإضافات ', '(إختياري)'),
+
              Text("اختر من القائمة", style: TextStyle(color: Colors.grey,fontSize: 10.sp),textDirection: TextDirection.rtl,),
 
              ListChoicesWidget(isSize: false, orderData: orderDataModel, functionUpdate: updateScreen),
@@ -188,7 +173,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   child:  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                    Text("د.أ ${orderPrice}",),
+                    Text("  ${(orderDataModel?.sizePrice ?? 0) * ordersNum.toDouble() + (orderDataModel?.finalPriceAdditions ?? 0)}  د.أ", textDirection: TextDirection.rtl,),
                     const Text("إضافة إلى السلة",)
                   ],))
             ),
